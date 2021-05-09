@@ -1,4 +1,5 @@
 export interface RespuestaSensor {
     ok: boolean;
-    data: string;
+    hum: string;
+    temp: string;
 }

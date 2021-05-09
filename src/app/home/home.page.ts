@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PickerController } from '@ionic/angular';
+import { PickerOptions } from "@ionic/core";
 import { SensorService } from '../services/sensor.service';
 
 @Component({
@@ -8,9 +10,20 @@ import { SensorService } from '../services/sensor.service';
 })
 export class HomePage implements OnInit {
 
-  data: string;
+  temp: string;
+  hum: string;
 
-  constructor( private sensorService: SensorService ) {}
+  animals = [
+    'Dog',
+    'Cat',
+    'Bird',
+    'Lizard',
+    'Chinchilla'
+  ]
+  
+
+  constructor( private sensorService: SensorService,
+               private pickerController: PickerController ) {}
 
   ngOnInit() {
     console.log('Hola mundo');
@@ -21,11 +34,43 @@ export class HomePage implements OnInit {
     
     await setInterval( () => {
       this.sensorService.getSensorData().subscribe( resp => {
-        this.data = resp.data;
-        console.log( resp );
+        this.temp = `${ resp.temp } C`;
+        this.hum = `${ resp.hum } %`;
       });
-    } , 3000);
+    } , 1000);
     
+  }
+
+  async showPicker() {
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Cancel",
+          role: 'cancel'
+        },
+        {
+          text:'Ok',
+          handler:(value:any) => {
+            console.log( value );
+          }
+        }
+      ],
+      columns:[{
+        name:'Animals',
+        options:this.getColumnOptions()
+      }]
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getColumnOptions(){
+    let options = [];
+    this.animals.forEach(x => {
+      options.push({text:x,value:x});
+    });
+    return options;
   }
 
 }
