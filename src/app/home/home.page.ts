@@ -12,13 +12,12 @@ export class HomePage implements OnInit {
 
   temp: string;
   hum: string;
+  escalaVal: number = 0;
 
-  animals = [
-    'Dog',
-    'Cat',
-    'Bird',
-    'Lizard',
-    'Chinchilla'
+  escalas = [
+    'Celsius',
+    'Fahrenheit',
+    'Kelvin'
   ]
   
 
@@ -26,7 +25,6 @@ export class HomePage implements OnInit {
                private pickerController: PickerController ) {}
 
   ngOnInit() {
-    console.log('Hola mundo');
     this.loadSensorData();
   }
 
@@ -34,8 +32,8 @@ export class HomePage implements OnInit {
     
     await setInterval( () => {
       this.sensorService.getSensorData().subscribe( resp => {
-        this.temp = `${ resp.temp } C`;
-        this.hum = `${ resp.hum } %`;
+        this.temp = `${ parseFloat( resp.temp ).toFixed( 2 ) } C`;
+        this.hum = `${ parseFloat( resp.hum ).toFixed( 2 ) } %`;
       });
     } , 1000);
     
@@ -50,27 +48,40 @@ export class HomePage implements OnInit {
         },
         {
           text:'Ok',
-          handler:(value:any) => {
-            console.log( value );
+          handler:( value: any ) => {
+            this.escalaVal = value.escalas.value;
           }
         }
       ],
       columns:[{
-        name:'Animals',
-        options:this.getColumnOptions()
-      }]
+        name: 'escalas',
+        options: this.getColumnOptions()
+      }],
+      animated: true,
+      cssClass: 'picker'
     };
 
-    let picker = await this.pickerController.create(options);
+    let picker = await this.pickerController.create( options );
     picker.present()
   }
 
   getColumnOptions(){
     let options = [];
-    this.animals.forEach(x => {
-      options.push({text:x,value:x});
+    this.escalas.forEach( ( x, index ) => {
+      options.push( { text: x, value: index } );
     });
     return options;
   }
+
+  toFahrenheit( t: string ) {
+    const temp = parseFloat( t );
+    return `${ ( ( temp * 9/5 ) + 32 ).toFixed( 2 ) } F`;
+  }
+
+  toKelvin( t: string ) {
+    const temp = parseFloat( t );
+    return `${ ( temp + 273.15 ).toFixed( 2 ) } K`;
+  }
+  
 
 }
