@@ -19,7 +19,6 @@ export class HomePage implements OnInit {
     'Fahrenheit',
     'Kelvin'
   ]
-  
 
   constructor( private sensorService: SensorService,
                private pickerController: PickerController ) {}
@@ -32,6 +31,7 @@ export class HomePage implements OnInit {
     
     await setInterval( () => {
       this.sensorService.getSensorData().subscribe( resp => {
+        console.log( resp );
         this.temp = `${ parseFloat( resp.temp ).toFixed( 2 ) } C`;
         this.hum = `${ parseFloat( resp.hum ).toFixed( 2 ) } %`;
       });
@@ -57,8 +57,7 @@ export class HomePage implements OnInit {
         name: 'escalas',
         options: this.getColumnOptions()
       }],
-      animated: true,
-      cssClass: 'picker'
+      animated: true
     };
 
     let picker = await this.pickerController.create( options );

@@ -1,18 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
     <ion-title>
-      Desde Sensor DHT11 Arduino
+      Arduino Server
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="dark">
   <div id="container" [ngSwitch]=this.escalaVal>
+    <img class='arduino' src="../../assets/img/arduino.png" alt="arduino">
     <h1 *ngSwitchCase="0">{{ this.temp }}</h1>
     <h1 *ngSwitchCase="1">{{ this.toFahrenheit( this.temp ) }}</h1>
     <h1 *ngSwitchCase="2">{{ this.toKelvin( this.temp ) }}</h1>
     <h1>{{ this.hum }}</h1>
     <br>
-    <ion-button color="tertiary" expand="block" fill='outline' shape='round' (click)="showPicker()">Escala de Temperatura</ion-button>
+    <ion-button color="light" fill='outline' shape='round' (click)="showPicker()">Escala de Temperatura</ion-button>
   </div>
 </ion-content>

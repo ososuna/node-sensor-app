@@ -10,7 +10,7 @@ export class SensorService {
   constructor( private http: HttpClient ) { }
 
   getSensorData() {
-    return this.http.get<RespuestaSensor>('http://192.168.56.1:8080/api/sensor');
+    return this.http.get<RespuestaSensor>('http://192.168.1.71:8080/api/sensor');
   }
 
 }
