@@ -27,8 +27,10 @@ export class HomePage implements OnInit {
     this.loadSensorData();
   }
 
+  // Load data from sensor service
   async loadSensorData() {
     
+    // Load data every second
     await setInterval( () => {
       this.sensorService.getSensorData().subscribe( resp => {
         console.log( resp );
@@ -39,6 +41,7 @@ export class HomePage implements OnInit {
     
   }
 
+  // Ionic picker settings
   async showPicker() {
     let options: PickerOptions = {
       buttons: [
@@ -72,11 +75,13 @@ export class HomePage implements OnInit {
     return options;
   }
 
+  // Convert to Fahrenheit
   toFahrenheit( t: string ) {
     const temp = parseFloat( t );
     return `${ ( ( temp * 9/5 ) + 32 ).toFixed( 2 ) } F`;
   }
 
+  // Convert to Kelvin
   toKelvin( t: string ) {
     const temp = parseFloat( t );
     return `${ ( temp + 273.15 ).toFixed( 2 ) } K`;
